@@ -1,7 +1,12 @@
 const dino = document.querySelector('.dino');
 const background = document.querySelector('.background');
+const score = document.querySelector('.points');
+const medal1 = document.querySelector('.medal1');
+const medal2 = document.querySelector('.medal2');
+const medal3 = document.querySelector('.medal3');
 let isJumping = false;
 let position = 0;
+let scorePoints = 0;
 
 function handleKeyUp(event) 
 {
@@ -37,7 +42,7 @@ function jump()
                     position -= 20;
                     dino.style.bottom = position + 'px';
                 }
-            }, 20)
+            }, 25)
         }
         else
         {
@@ -45,7 +50,7 @@ function jump()
             dino.style.bottom = position + 'px';
         }
         
-    }, 20)
+    }, 15)
 }
 
 function createCactus()
@@ -81,5 +86,31 @@ function createCactus()
     setTimeout(createCactus, randomTime);
 }
 
+function scoreUp()
+{
+
+    let scoreInterval = setInterval(() => 
+    {
+        scorePoints += 1;
+        score.textContent = scorePoints;  
+        
+        if (scorePoints === 30)
+        {    
+            medal1.style.visibility = 'visible';
+        }
+        if (scorePoints === 60)
+        {    
+            medal2.style.visibility = 'visible';
+        }
+        if (scorePoints === 90)
+        {    
+            medal3.style.visibility = 'visible';
+        }
+
+    }, 1000);
+
+}
+
+scoreUp();
 createCactus();
 document.addEventListener('keyup', handleKeyUp);
