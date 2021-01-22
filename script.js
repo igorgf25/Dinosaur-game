@@ -1,7 +1,12 @@
 const dino = document.querySelector('.dino');
 const background = document.querySelector('.background');
+const score = document.querySelector('.points');
+const medal1 = document.querySelector('.medal1');
+const medal2 = document.querySelector('.medal2');
+const medal3 = document.querySelector('.medal3');
 let isJumping = false;
 let position = 0;
+let scorePoints = 0;
 
 function handleKeyUp(event) 
 {
@@ -37,7 +42,7 @@ function jump()
                     position -= 20;
                     dino.style.bottom = position + 'px';
                 }
-            }, 20)
+            }, 25)
         }
         else
         {
@@ -45,14 +50,14 @@ function jump()
             dino.style.bottom = position + 'px';
         }
         
-    }, 20)
+    }, 15)
 }
 
 function createCactus()
 {
     const cactus = document.createElement('div');
     let cactusPosition = 1000;
-    let randomTime = Math.random() * 6000;
+    let randomTime = Math.random() * (5000 - 1000) + 1000;
 
     cactus.classList.add('cactus');
     cactus.style.left = 1000 + 'px';
@@ -69,7 +74,26 @@ function createCactus()
         else if(cactusPosition > 0 && cactusPosition < 60 && position < 60)
         {
             clearInterval(leftInterval);
-            document.body.innerHTML = '<h1 class="game-over">Fim de Jogo</h1>';
+            background.removeChild(cactus);
+                
+            {
+
+            }
+            let quantCactus = background.childNodes.length - 6;
+            
+            var gameOver = confirm("Game Over Score : " + scorePoints);
+
+            if(gameOver === true)
+            {
+                restart(quantCactus);    
+            }
+            else
+            {
+                close();
+            }  
+            
+            
+                       
         }
         else
         {
@@ -81,5 +105,49 @@ function createCactus()
     setTimeout(createCactus, randomTime);
 }
 
+function scoreUp()
+{
+
+    let scoreInterval = setInterval(() => 
+    {
+        scorePoints += 1;
+        score.textContent = scorePoints;  
+        
+        if (scorePoints === 30)
+        {    
+            medal1.style.visibility = 'visible';
+        }
+        if (scorePoints === 60)
+        {    
+            medal2.style.visibility = 'visible';
+        }
+        if (scorePoints === 90)
+        {    
+            medal3.style.visibility = 'visible';
+        }
+
+    }, 1000);
+
+}
+
+function restart(quantCactus)
+{
+    isJumping = false;
+    dino.style.bottom = position + 'px';
+    scorePoints = 0;
+
+    for(i = 0; i < quantCactus ; i++)
+    {
+        background.removeChild(background.lastChild);
+    }
+    medal1.style.visibility = 'hidden';
+    medal2.style.visibility = 'hidden';
+    medal3.style.visibility = 'hidden';
+
+
+}
+
+
+scoreUp();
 createCactus();
 document.addEventListener('keyup', handleKeyUp);
